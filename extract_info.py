@@ -50,6 +50,4 @@ for file in os.listdir("../VOC2007/Annotations") :
 col_names = ['filename', 'with', 'height', 'depth', 'obj_list']
 images = pd.DataFrame(img,columns=(col_names))
 
-images.to_csv(path_or_buf="images_dataframe")
-
-
+images.to_pickle("images_dataframe.pk")
