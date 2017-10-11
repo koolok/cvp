@@ -59,8 +59,11 @@ for file in os.listdir("../VOCdevkit/VOC2007/Annotations") :
 img = pool.map_async(parse, files).get()
     
 # Transfom the result in a Dataframe
-col_names = ['filename', 'with', 'height', 'depth', 'obj_list']
+col_names = ['filename', 'width', 'height', 'depth', 'obj_list']
 images = pd.DataFrame(img,columns=(col_names))
+
+images = images.sort_values(by = 'filename')
+images.index = range(len(images))
 
 # Save the Dataframe
 images.to_pickle("images_dataframe.pk")
