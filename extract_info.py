@@ -53,8 +53,8 @@ pool = Pool()
 
 # Extract Images information
 files = list()
-for file in os.listdir("../VOC2007/Annotations") :
-    files.append("../VOC2007/Annotations/"+file)
+for file in os.listdir("../VOCdevkit/VOC2007/Annotations") :
+    files.append("../VOCdevkit/VOC2007/Annotations/"+file)
     
 img = pool.map_async(parse, files).get()
     
