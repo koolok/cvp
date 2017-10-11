@@ -9,7 +9,7 @@ import pickle as pk
 from multiprocessing import Pool
 
 """Parameters and constants"""
-size_image = 30
+size_image = 50
 gap = 4
 
 """Constants"""
@@ -63,7 +63,7 @@ list_image = pool.map_async(process,list_files).get()
 dataframe = pd.DataFrame(list_image)
 print(dataframe)
 
-print("time",time()-time_start,"seconds")
+print("time ",time()-time_start," seconds")
     
 with open('BOW_size_'+str(size_image)+'x'+str(size_image)+'_dataframe', 'wb') as file:
     pickler = pk.Pickler(file)
