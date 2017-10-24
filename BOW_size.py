@@ -59,12 +59,16 @@ pool = Pool()
 
 list_image = pool.map_async(process,list_files).get()
 
+col_names = ['filename','histograms']
 
-dataframe = pd.DataFrame(list_image)
-print(dataframe)
+dataframe = pd.DataFrame(list_image,columns = (col_names))
 
 print("time ",time()-time_start," seconds")
-    
+
+dataframe = dataframe.sort_values(by = 'filename')
+dataframe.index = range(len(dataframe))
+print(dataframe)
+
 with open('BOW_size_'+str(size_image)+'x'+str(size_image)+'_dataframe', 'wb') as file:
     pickler = pk.Pickler(file)
     pickler.dump(dataframe)

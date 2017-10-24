@@ -13,6 +13,7 @@ nb_image = 4
 gap = 4
 
 """Constants"""
+size = nb_image * nb_image
 nb_bin = pow(gap,3)
 hist_save = [0]*nb_bin
 thresh = 256/gap
@@ -32,7 +33,7 @@ def process(file) :
     new_height = height//nb_image
     rectangle_size = new_width*new_height
 
-    list_hist = [file]
+    list_hist = []
     
     """Histograms of the percentage of pixels in each bin for all rectangles"""
     for w in range(nb_image) :
@@ -47,7 +48,7 @@ def process(file) :
             hist = [nb / rectangle_size for nb in hist]
             list_hist.append(hist)
 
-    return list_hist
+    return [file,list_hist]
 
 """List of all image files""" 
 path = "../VOCdevkit/VOC2007/JPEGImages/"
@@ -59,13 +60,17 @@ pool = Pool()
 
 list_image = pool.map_async(process,list_files).get()
 
+col_names = ['filename','histograms']
 
-dataframe = pd.DataFrame(list_image)
-print(dataframe)
+dataframe = pd.DataFrame(list_image,columns = (col_names))
 
 print("time ",time()-time_start," seconds")
+
+dataframe = dataframe.sort_values(by = 'filename')
+dataframe.index = range(len(dataframe))
+print(dataframe)
     
-with open('BOW_number_'+str(nb_image*nb_image)+'_dataframe', 'wb') as file:
+with open('BOW_number_'+str(size)+'_dataframe', 'wb') as file:
     pickler = pk.Pickler(file)
     pickler.dump(dataframe)
 
