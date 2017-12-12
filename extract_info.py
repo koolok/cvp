@@ -53,8 +53,8 @@ pool = Pool()
 
 # Extract Images information
 files = list()
-for file in os.listdir("../VOCdevkit/VOC2007/Annotations") :
-    files.append("../VOCdevkit/VOC2007/Annotations/"+file)
+for file in os.listdir("../VOCdevkit_test/VOC2007/Annotations") :
+    files.append("../VOCdevkit_test/VOC2007/Annotations/"+file)
     
 img = pool.map_async(parse, files).get()
     
@@ -66,4 +66,4 @@ images = images.sort_values(by = 'filename')
 images.index = range(len(images))
 
 # Save the Dataframe
-images.to_pickle("images_dataframe.pk")
+images.to_pickle("images_dataframe_test.pk")
