@@ -1,0 +1,1 @@
+[{"label": "chair", "confidence": 0.51, "topleft": {"x": 171, "y": 246}, "bottomright": {"x": 256, "y": 357}}, {"label": "sofa", "confidence": 0.74, "topleft": {"x": 10, "y": 234}, "bottomright": {"x": 175, "y": 371}}, {"label": "tvmonitor", "confidence": 0.64, "topleft": {"x": 299, "y": 139}, "bottomright": {"x": 361, "y": 194}}]

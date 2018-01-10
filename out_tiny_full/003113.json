@@ -1,0 +1,1 @@
+[{"label": "pottedplant", "confidence": 0.75, "topleft": {"x": 277, "y": 26}, "bottomright": {"x": 384, "y": 145}}, {"label": "tvmonitor", "confidence": 0.91, "topleft": {"x": 61, "y": 111}, "bottomright": {"x": 238, "y": 227}}]
