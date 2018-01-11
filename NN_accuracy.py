@@ -11,13 +11,13 @@ import pandas as pd
 import os
 import json
 
-def parse (file) :
+def parse (directory,file) :
 
     file_ = open(file, "r", encoding="utf-8")
     line = file_.readline()
     
     # Extract image informations
-    filename = file.replace("out_tiny_full/","").replace("json","jpg")
+    filename = file.replace(directory,"").replace("json","jpg")
     list_obj = json.loads(line)
     
     #Extract object informations
@@ -41,19 +41,14 @@ def parse (file) :
 
     return (filename,obj_list)
 
-
-# Create a pool of process
-pool = Pool()
-
 # Extract Images information
 files = list()
 for file in os.listdir("out_tiny_full") :
     files.append("out_tiny_full/"+file)
   
-
-img = pool.map_async(parse, files).get()   
-pool.close()
-
+img = []
+for file in files :
+    img.append(parse("out_tiny_full/",file))
 
 # Transfom the result in a Dataframe
 col_names = ['filename', 'obj_list']
@@ -64,3 +59,45 @@ images.index = range(len(images))
 
 # Save the Dataframe
 images.to_pickle("out_tiny_full.pk")
+
+
+
+
+# Extract Images information
+files = list()
+for file in os.listdir("out_30_epoch_full") :
+    files.append("out_30_epoch_full/"+file)
+  
+img = []
+for file in files :
+    img.append(parse("out_30_epoch_full/",file))
+
+# Transfom the result in a Dataframe
+col_names = ['filename', 'obj_list']
+images = pd.DataFrame(img,columns=(col_names))
+
+images = images.sort_values(by = 'filename')
+images.index = range(len(images))
+
+# Save the Dataframe
+images.to_pickle("out_30_epoch_full.pk")
+
+
+# Extract Images information
+files = list()
+for file in os.listdir("out_260_epoch_full") :
+    files.append("out_260_epoch_full/"+file)
+  
+img = []
+for file in files :
+    img.append(parse("out_260_epoch_full/",file))
+
+# Transfom the result in a Dataframe
+col_names = ['filename', 'obj_list']
+images = pd.DataFrame(img,columns=(col_names))
+
+images = images.sort_values(by = 'filename')
+images.index = range(len(images))
+
+# Save the Dataframe
+images.to_pickle("out_260_epoch_full.pk")
