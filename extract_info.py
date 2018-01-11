@@ -57,6 +57,8 @@ for file in os.listdir("../VOCdevkit_test/VOC2007/Annotations") :
     files.append("../VOCdevkit_test/VOC2007/Annotations/"+file)
     
 img = pool.map_async(parse, files).get()
+
+pool.close()
     
 # Transfom the result in a Dataframe
 col_names = ['filename', 'width', 'height', 'depth', 'obj_list']
