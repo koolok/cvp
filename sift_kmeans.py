@@ -10,29 +10,31 @@ Created on Tue Oct 24 15:07:45 2017
 #import cv2
 import matplotlib.pyplot as plt
 from os import listdir
-#from os import chdir
+from os import chdir
 #from multiprocessing import Pool
 import numpy as np
 import pandas as pd
 from sklearn.cluster import KMeans
-from sklearn import svm
-from sklearn.metrics import accuracy_score
+#from sklearn import svm
+#from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 #import kmeans
 import cv2
+
+chdir('/home/jmarnat/Documents/CV-project/cvp')
 
 
 # =============================================================================
 # loading the sifts descriptors
 # =============================================================================
 
-X = pd.read_csv('X_sifts-0.20.csv')
+#X = pd.read_csv('X_sifts-0.20.csv')
 X = pd.read_csv('X_surf-5000.csv')
 
 X = X.drop('Unnamed: 0',axis=1)
 X = np.array(X)
 
-y = pd.read_csv('y_sifts-0.20.csv')
+#y = pd.read_csv('y_sifts-0.20.csv')
 y = pd.read_csv('y_surf-5000.csv')
 y = y.drop('Unnamed: 0',axis=1)
 y = y.values
@@ -68,7 +70,6 @@ print("DATA LOADED")
 X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.3, random_state=0)
 
-
     
 y_train = y_train.reshape(-1)
 y_test = y_test.reshape(-1)
@@ -77,7 +78,7 @@ y_test = y_test.reshape(-1)
 km = KMeans(n_clusters=200,max_iter=10,n_jobs=-1).fit(X)
 clusters = km.cluster_centers_
 
-pd.DataFrame(clusters).to_csv('clusters-surf.csv')
+#pd.DataFrame(clusters).to_csv('clusters-surf.csv')
 
 
 # =============================================================================
