@@ -68,6 +68,7 @@ for i_img in range(n):
     X = X.append(X_tmp)
     y = y.append(y_tmp)
 
+#%%
 # =============================================================================
 # test for the best n
 # =============================================================================
@@ -91,10 +92,10 @@ if False:
     plt.show()
     
     
-    
-
 
 print("DONE POOLING")
+
+#%%
 
 # testing on 1000/45xx images
 

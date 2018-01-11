@@ -6,6 +6,7 @@ Created on Wed Oct  4 16:24:51 2017
 @author: jmarnat
 """
 
+#%% libraries
 #from PIL import Image
 import cv2
 import matplotlib.pyplot as plt
@@ -17,7 +18,9 @@ import pandas as pd
 from sklearn.metrics import accuracy_score
 
 
-chdir('/home/jmarnat/Documents/CV/cvp-master')
+#%%
+
+chdir('/home/jmarnat/Documents/CV-project/cvp')
 
 
 #==============================================================================
@@ -25,8 +28,8 @@ chdir('/home/jmarnat/Documents/CV/cvp-master')
 #==============================================================================
 
 img = cv2.imread("../VOCdevkit/VOC2007/JPEGImages/000001.jpg")
-sift = cv2.xfeatures2d.SIFT_create()
-kp, des = sift.detectAndCompute(cv2.cvtColor(img,cv2.COLOR_BGR2GRAY),None)
+#sift = cv2.xfeatures2d.SIFT_create()
+#kp, des = sift.detectAndCompute(cv2.cvtColor(img,cv2.COLOR_BGR2GRAY),None)
 
 idf = pd.read_pickle("./images_dataframe.pk")
 
@@ -39,6 +42,12 @@ idf = pd.read_pickle("./images_dataframe.pk")
 path = "../VOCdevkit/VOC2007/JPEGImages/"
 list_files = listdir(path)
 list_files.sort()
+
+
+
+
+#%% build classes
+
 
 sift = cv2.xfeatures2d.SIFT_create()
 idf = pd.read_pickle("./images_dataframe.pk")
@@ -89,7 +98,7 @@ y_new.to_csv("y_new-1000-imgs.csv")
 
 #for i_img in range(len(list_files)):
 
-
+#%%
 # =============================================================================
 # Testing    
 # =============================================================================
@@ -97,11 +106,11 @@ y_new.to_csv("y_new-1000-imgs.csv")
 bf = cv2.BFMatcher()
 
 
-X_train = pd.read_csv('X_new-1000-imgs.csv')
+X_train = pd.read_csv('X_surf-5000.csv')
 X_train = X_train.drop('Unnamed: 0',axis=1)
 X_train = np.array(X_train)
 
-y_train = pd.read_csv('y_new-1000-imgs.csv')
+y_train = pd.read_csv('y_surf-5000.csv')
 y_train = y_train.drop('Unnamed: 0',axis=1)
 y_train = y_train.values
 y_train = np.asarray(y_train)
@@ -124,15 +133,17 @@ for y_i in range(len(y_train)):
 y_train = y_train.astype(int)
 
 
-y_train_int = pd.read_csv("y_train_int.csv")
-y_train_int.drop(y_train_int.columns[[0]],axis=1)
-y_train = y_train_int.values
+#y_train_int = pd.read_csv("y_train_int.csv")
+#y_train_int.drop(y_train_int.columns[[0]],axis=1)
+#y_train = y_train_int.values
 
-img = cv2.imread(path+"000028.jpg")
-sift = cv2.xfeatures2d.SIFT_create()
-img_kp, img_des = sift.detectAndCompute(cv2.cvtColor(img,cv2.COLOR_BGR2GRAY),None)    
+#img = cv2.imread(path+"000028.jpg")
+#sift = cv2.xfeatures2d.SIFT_create()
+#img_kp, img_des = sift.detectAndCompute(cv2.cvtColor(img,cv2.COLOR_BGR2GRAY),None)    
 
 
+
+#%%
 # TESTING WITH SKLEARN
 from sklearn.neighbors import KNeighborsClassifier
 
@@ -142,19 +153,52 @@ X_train, X_test, y_train, y_test = train_test_split(
         X_train, y_train, test_size=0.33, random_state=42)
 
 knn = KNeighborsClassifier(n_neighbors=20)
-knn.fit(X_train,y_train)
+print("fitting...")
+knn.fit(X_train,y_train.ravel())
+print("...done")
+#predict = knn.predict(X_test[[range(1000)]])
+#predict_prob = knn.predict_proba(X_test[[range(100)]])
 
-predict = knn.predict(X_test[[range(100)]])
-predict_prob = knn.predict_proba(X_test[[range(100)]])
+#print(predict[[range(10)]],"\n---\n",y_test[[range(10)]].T)
+#predict
 
-print(predict[[range(10)]],"\n---\n",y_test[[range(10)]])
-predict
-
-print(accuracy_score(y_test[range(100),1].T,predict[:,1].T))
+#print("accuracy:",accuracy_score(y_test[range(100),0].T,predict[:].T))
 
 
 
+#%%
 
+
+results = pd.DataFrame()
+for i in range(len(X_test)):
+    print(np.round(100*i/len(X_test)),"/100")
+    class_i = y_test[i][0]
+    x_test_i = X_test[i]
+    pred = knn.predict([X_test[i]])[0]
+    newrow = pd.DataFrame([class_i,pred]).T
+    results = results.append(newrow)
+
+
+#%% results
+
+            
+the_classes = ['person','bird','cat','cow','dog',
+           'horse','sheep','aeroplane','bicycle','boat',
+           'bus','car','motorbike','train','bottle',
+           'chair','diningtable','pottedplant','sofa','tvmonitor']
+
+results2 = pd.read_csv('results-sifts-500.csv')
+results2.columns = ['0','y','pred']
+
+mean = 0
+for i in range(20):
+    acc = accuracy_score(
+        results2[results2['y']==i]['y'],
+        results2[results2['y']==i]['pred'])
+    mean += acc
+    print('class=',the_classes[i],'\t\taccuracy=',acc)
+mean /= 20
+print('mean acc = ',mean)
 
 
 
