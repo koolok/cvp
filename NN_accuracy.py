@@ -6,7 +6,7 @@ Created on Thu Jan 11 18:43:07 2018
 @author: koolok
 """
 
-from multiprocessing import Pool
+#from multiprocessing import Pool
 import pandas as pd
 import os
 import json

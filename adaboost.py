@@ -48,7 +48,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 
 
-bdt = AdaBoostClassifier(DecisionTreeClassifier(max_depth=10),
+bdt = AdaBoostClassifier(DecisionTreeClassifier(max_depth=4),
                          algorithm="SAMME",
                          n_estimators=200)
 
@@ -59,7 +59,7 @@ time_b = datetime.now()
 
 print('started at    ',time_a)
 print('ended at      ',time_b)
-print('fitting-time:',time_b - time_a)
+print('fitting-time:',time_b - time_a) 
 
 #res = bdt.predict([X_test[0]])[0]
 #res
