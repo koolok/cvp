@@ -1,0 +1,1 @@
+[{"label": "motorbike", "confidence": 0.77, "topleft": {"x": 99, "y": 140}, "bottomright": {"x": 389, "y": 304}}, {"label": "person", "confidence": 0.72, "topleft": {"x": 236, "y": 105}, "bottomright": {"x": 329, "y": 284}}]
